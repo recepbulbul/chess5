@@ -559,6 +559,7 @@ class Chess {
                 case 'created':
                     this.gameId = data.gameId;
                     this.playerColor = data.color;
+                    document.querySelector('.board-container').dataset.color = this.playerColor;
                     document.getElementById('gameStatus').textContent = 
                         `Oyun ID: ${this.gameId} - Rakip bekleniyor...`;
                     break;
@@ -566,6 +567,7 @@ class Chess {
                 case 'joined':
                     this.gameId = data.gameId;
                     this.playerColor = data.color;
+                    document.querySelector('.board-container').dataset.color = this.playerColor;
                     this.updateBoard(data.board);
                     document.getElementById('gameStatus').textContent = 
                         `Oyun başladı! Renginiz: ${this.playerColor === 'white' ? 'Beyaz' : 'Siyah'}`;
