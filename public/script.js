@@ -18,6 +18,7 @@ class Chess {
         this.addResetListener();
         this.setupOnlineGame();
         this.setupWebSocket();
+        this.setupChat();
     }
 
     createBoard() {
@@ -586,6 +587,10 @@ class Chess {
                     alert('Rakip oyundan ayrıldı!');
                     this.resetGame();
                     break;
+
+                case 'chat':
+                    this.addChatMessage(data.message, data.color);
+                    break;
             }
         };
     }
@@ -628,6 +633,47 @@ class Chess {
                 delete element.dataset.color;
             }
         });
+    }
+
+    setupChat() {
+        const chatInput = document.getElementById('chatInput');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+
+        sendMessageBtn.addEventListener('click', () => this.sendChatMessage());
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.sendChatMessage();
+            }
+        });
+    }
+
+    sendChatMessage() {
+        const chatInput = document.getElementById('chatInput');
+        const message = chatInput.value.trim();
+        
+        if (message && this.gameId && this.playerColor) {
+            // Mesajı sohbet alanına ekle
+            this.addChatMessage(message, this.playerColor);
+            
+            // Mesajı karşı tarafa gönder
+            this.ws.send(JSON.stringify({
+                type: 'chat',
+                gameId: this.gameId,
+                color: this.playerColor,
+                message: message
+            }));
+            
+            chatInput.value = '';
+        }
+    }
+
+    addChatMessage(message, color) {
+        const chatMessages = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat-message';
+        messageDiv.textContent = `${color === 'white' ? 'Beyaz' : 'Siyah'}: ${message}`;
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
 
