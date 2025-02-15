@@ -75,6 +75,20 @@ wss.on('connection', (ws) => {
                     }
                 }
                 break;
+
+            case 'chat':
+                const chatGame = games.get(data.gameId);
+                if (chatGame) {
+                    const opponent = data.color === 'white' ? chatGame.black : chatGame.white;
+                    if (opponent) {
+                        opponent.send(JSON.stringify({
+                            type: 'chat',
+                            message: data.message,
+                            color: data.color
+                        }));
+                    }
+                }
+                break;
         }
     });
 
