@@ -278,6 +278,17 @@ input::placeholder {
 @keyframes fadeIn {
     from { 
         opacity: 0; 
+        transform: scale(0.97) rotate(180deg); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1) rotate(180deg); 
+    }
+}
+
+@keyframes fadeInWhite {
+    from { 
+        opacity: 0; 
         transform: scale(0.97); 
     }
     to { 
@@ -288,6 +299,22 @@ input::placeholder {
 
 .square[data-piece] {
     animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.board-container[data-color="black"] #board {
+    transform: rotate(180deg);
+}
+
+.board-container[data-color="black"] .square {
+    transform: rotate(180deg);
+}
+
+.board-container[data-color="black"] .square[data-piece] {
+    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.board-container[data-color="white"] .square[data-piece] {
+    animation: fadeInWhite 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Özel Scrollbar */
