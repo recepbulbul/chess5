@@ -1,15 +1,15 @@
 :root {
-    --board-size: min(80vh, 700px);
+    --board-size: min(85vh, 720px);
     --square-size: calc(var(--board-size) / 8);
-    --primary-color: #1b1b1b;
-    --secondary-color: #222222;
-    --panel-bg: #2a2a2a;
-    --accent-color: #5c94e5;
-    --light-square: #edeed1;
-    --dark-square: #779952;
-    --text-color: #e0e0e0;
-    --border-radius: 8px;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    --primary-color: #181818;
+    --secondary-color: #1f1f1f;
+    --panel-bg: #242424;
+    --accent-color: #4171d6;
+    --light-square: #eeeed2;
+    --dark-square: #769656;
+    --text-color: #e4e4e4;
+    --border-radius: 6px;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
 }
 
 * {
@@ -17,6 +17,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -28,7 +29,7 @@ body {
 
 .container {
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 340px 1fr;
     height: 100vh;
 }
 
@@ -38,7 +39,43 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    position: relative;
+}
+
+.game-controls::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, 
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,0.05) 50%,
+        rgba(255,255,255,0) 100%);
+}
+
+#gameInfo {
+    background: var(--secondary-color);
+    padding: 1.25rem;
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+#currentPlayer {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+#gameStatus {
+    font-weight: 600;
+    color: var(--accent-color);
+    font-size: 1.05rem;
 }
 
 .join-game {
@@ -54,21 +91,26 @@ button {
     background: var(--accent-color);
     color: #fff;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 8px rgba(65, 113, 214, 0.15);
 }
 
 button:hover {
-    background: #4a7fd1;
+    background: #5282e7;
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(65, 113, 214, 0.25);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 input {
     padding: 0.875rem 1.25rem;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: var(--border-radius);
     background: var(--secondary-color);
     color: var(--text-color);
@@ -79,11 +121,11 @@ input {
 
 input:focus {
     border-color: var(--accent-color);
-    background: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(65, 113, 214, 0.1);
 }
 
 input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.25);
 }
 
 .board-container {
@@ -101,7 +143,8 @@ input::placeholder {
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow);
-    border: 8px solid #2c2c2c;
+    border: 6px solid #242424;
+    position: relative;
 }
 
 .square {
@@ -110,7 +153,7 @@ input::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: calc(var(--square-size) * 0.7);
+    font-size: calc(var(--square-size) * 0.65);
     cursor: pointer;
     transition: all 0.15s ease;
     position: relative;
@@ -125,109 +168,28 @@ input::placeholder {
 }
 
 .selected {
-    background-color: rgba(106, 164, 255, 0.5) !important;
+    background-color: rgba(106, 164, 255, 0.45) !important;
 }
 
 .valid-move::after {
     content: '';
     position: absolute;
-    width: 32%;
-    height: 32%;
-    background-color: rgba(0, 0, 0, 0.2);
+    width: 28%;
+    height: 28%;
+    background-color: rgba(0, 0, 0, 0.18);
     border-radius: 50%;
-}
-
-#gameInfo {
-    background: var(--secondary-color);
-    padding: 1.25rem;
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-#currentPlayer {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-    color: var(--text-color);
-}
-
-#gameStatus {
-    font-weight: 600;
-    color: var(--accent-color);
-    font-size: 1.1rem;
-}
-
-/* Responsive Tasarım */
-@media (max-width: 1200px) {
-    .container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
-        height: 100vh;
-        overflow-y: auto;
-    }
-
-    .game-controls {
-        padding: 1rem;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    :root {
-        --board-size: min(90vw, 80vh);
-    }
-
-    .board-container {
-        padding: 1rem;
-    }
-
-    .chat-container {
-        height: 250px;
-    }
-}
-
-/* Animasyonlar */
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: scale(0.98); 
-    }
-    to { 
-        opacity: 1; 
-        transform: scale(1); 
-    }
-}
-
-.square[data-piece] {
-    animation: fadeIn 0.2s ease-out;
-}
-
-/* Özel Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--secondary-color);
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--accent-color);
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #4a7fd1;
 }
 
 .chat-container {
     display: flex;
     flex-direction: column;
     margin-top: auto;
-    height: 300px;
+    height: 320px;
     background: var(--secondary-color);
     border-radius: var(--border-radius);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .chat-messages {
@@ -246,34 +208,102 @@ input::placeholder {
     font-size: 0.925rem;
     line-height: 1.4;
     word-break: break-word;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .chat-input-container {
     display: flex;
-    gap: 0.75rem;
-    padding: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
     background: var(--panel-bg);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
 }
 
 .chat-input-container input {
     flex: 1;
-    padding: 0.75rem 1rem;
+    min-width: 0;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
 }
 
 .chat-input-container button {
-    padding: 0.75rem 1.25rem;
-    text-transform: none;
+    padding: 0.625rem 1rem;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    min-width: 80px;
 }
 
 .square[data-color="white"] {
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .square[data-color="black"] {
     color: #000;
     text-shadow: none;
+}
+
+/* Responsive Tasarım */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .game-controls {
+        padding: 1.25rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    :root {
+        --board-size: min(92vw, 80vh);
+    }
+
+    .board-container {
+        padding: 1.25rem;
+    }
+
+    .chat-container {
+        height: 280px;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: scale(0.97); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+.square[data-piece] {
+    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Özel Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5282e7;
 } 
