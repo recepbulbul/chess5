@@ -1,0 +1,27 @@
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Satranç</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-controls">
+            <div id="gameInfo">
+                <div id="currentPlayer">Sıra: Beyaz</div>
+                <div id="gameStatus"></div>
+            </div>
+            <button id="createGameBtn">Yeni Oyun Oluştur</button>
+            <div class="join-game">
+                <input type="text" id="gameIdInput" placeholder="Oyun ID">
+                <button id="joinGameBtn">Oyuna Katıl</button>
+            </div>
+            <button id="resetBtn">Oyunu Sıfırla</button>
+        </div>
+        <div class="board-container">
+            <div id="board"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
